@@ -20,6 +20,25 @@ bool isPrime(int number) {
 }
 
 void work(int id) {
+    auto start = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed;
+
+    while (true) {
+        if (isPrime(number)) prime = number;
+        number++;
+        std::this_thread::yield();
+        auto now = std::chrono::high_resolution_clock::now();
+        elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(now - start);
+
+        if (elapsed.count() >= 30.0) break;
+    }
+
+    std::stringstream os;
+    os << "Thread " << id << " ended. "
+       << "Total run time: " << elapsed.count()
+       << " seconds. Largest prime calculated: " << prime;
+    std::cout << std::flush << os.str() << std::endl;
+}
     // TODO (part 1):
     // 1. Use high resolution clock in std::chrono to mark the start time.
     // 2. Use duration in std::chrono to keep track of the elapsed time.
@@ -29,21 +48,7 @@ void work(int id) {
     //    c. Current thread voluntary context switch.
     //    d. Calculate elapsed time using high resolution clock in std::chrono
     //    e. If elapsed is equal to or greater than 30.0, break; 
-
-
-
     // END TODO (part 1)
-
-
-
-    std::stringstream os;
-    os << "Thread " << id << " ended. "
-       << "Total run time: " << elapsed.count()
-       << " seconds. Largest prime calculated: " << prime;
-    std::cout << std::flush << os.str() << std::endl;
-}
-
-
 
 int main(int argc, char *argv[]) {
     try {
@@ -62,19 +67,27 @@ int main(int argc, char *argv[]) {
             return 1;
         }
 
+        int nThreads = 1; // Default to 1 thread if not specified
+        if (vm.count("threads")) {
+            nThreads = vm["threads"].as<int>();
+        }
+
+        std::vector<std::thread> threads;
+        for(int i = 0; i < nThreads; ++i) {
+            threads.push_back(std::thread(work, i));
+        }
+
+        for(auto& t : threads) {
+            t.join();
+        }
+    }
+
         // TODO (part 2): 
         // 1. Get the number of threads, N, from the command line
         // 2. Create N threads and put into a vector
         // 3. Have the main thread join() on all threads in the vector 
-
-
-
         // END TODO (part 2)
 
-
-
-
-    }
     catch(std::system_error& e) {
         std::cerr << "System error: " << e.what() << "\n";
         return 1;
