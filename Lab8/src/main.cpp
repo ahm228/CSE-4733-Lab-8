@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
             return 1;
         }
 
-        int nThreads = 1; // Default to 1 thread if not specified
+        int nThreads = 1;
         if (vm.count("threads")) {
             nThreads = vm["threads"].as<int>();
         }
