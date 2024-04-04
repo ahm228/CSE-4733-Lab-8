@@ -11,8 +11,8 @@ thread_local int prime = 2;
 
 bool isPrime(int number) {
     if(number < 2) return false;
-    for(int i = 2; i * i <= number; i++){
-        if(number % i == 0){
+    for(int i = 2; i * i <= number; i++) {
+        if(number % i == 0) {
             return false;
         }
     }
@@ -39,16 +39,6 @@ void work(int id) {
        << " seconds. Largest prime calculated: " << prime;
     std::cout << std::flush << os.str() << std::endl;
 }
-    // TODO (part 1):
-    // 1. Use high resolution clock in std::chrono to mark the start time.
-    // 2. Use duration in std::chrono to keep track of the elapsed time.
-    // 3. While true
-    //    a. If number contains a prime number, update prime
-    //    b. Increment number
-    //    c. Current thread voluntary context switch.
-    //    d. Calculate elapsed time using high resolution clock in std::chrono
-    //    e. If elapsed is equal to or greater than 30.0, break; 
-    // END TODO (part 1)
 
 int main(int argc, char *argv[]) {
     try {
@@ -81,12 +71,6 @@ int main(int argc, char *argv[]) {
             t.join();
         }
     }
-
-        // TODO (part 2): 
-        // 1. Get the number of threads, N, from the command line
-        // 2. Create N threads and put into a vector
-        // 3. Have the main thread join() on all threads in the vector 
-        // END TODO (part 2)
 
     catch(std::system_error& e) {
         std::cerr << "System error: " << e.what() << "\n";
