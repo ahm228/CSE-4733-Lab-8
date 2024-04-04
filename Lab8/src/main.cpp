@@ -20,15 +20,15 @@ bool isPrime(int number) {
 }
 
 void work(int id) {
-    auto start = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed;
+    auto start = std::chrono::high_resolution_clock::now(); // 1. Use high resolution clock in std::chrono to mark the start time.
+    std::chrono::duration<double> elapsed; // 2. Use duration in std::chrono to keep track of the elapsed time.
 
     while (true) {
-        if (isPrime(number)) prime = number;
+        if (isPrime(number)) prime = number; 
         number++;
-        std::this_thread::yield();
+        std::this_thread::yield(); // Current thread voluntary context switch.
         auto now = std::chrono::high_resolution_clock::now();
-        elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(now - start);
+        elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(now - start); // Calculate elapsed time using high resolution clock in std::chrono
 
         if (elapsed.count() >= 30.0) break;
     }
